@@ -2,17 +2,23 @@ const express=require('express');
 
 const app=express();
 
-app.use("/timer",(req,res)=>{
-    res.send("Namaste From Node");
+//This will only handle GET  call 
+app.get("/user",(req,res)=>{
+    res.send({firstname:"Vijay", lastname:"MM"})
 });
 
+app.post("/user",(req,res)=>{
+    res.send("Data successfully saved to the database");
+});
+
+app.delete("/user",(req,res)=>{
+    res.send("Deleted successfully ");
+});
+
+//This will match all the HTTP method API call to /test
 app.use("/test",(req,res)=>{
     res.send("Hello World From Server");
 });
-app.use("/hello",(req,res)=>{
-    res.send("Hello Hello Hello");
-});
-
 
 app.listen(7777,()=>{
     console.log("server running on port 7777...");
