@@ -8,14 +8,7 @@ const User=require("./models/user");
 app.post("/signup",async (req,res)=>{
 
     const user=new User(req.body);
-    // const user=new User({
-    // firstName:"Virat",
-    // lastName:"Kohli",
-    // gender:"Male",
-    // emailID:"vk@gmail.com",
-    // password:"1547655",
-   
-    // });
+    
  try{   
 await user.save();
 res.send("User Added succesfully!!")
@@ -25,9 +18,58 @@ res.status(400).send("Error saving the data:"+err.message);
 }
 });
 
+app.get("/user",async(req,res)=>{
+    const userEmail=req.body.emailID;
+
+    try{
+        const users=await User.find({emailID:userEmail});
+        if(users.length===0){
+            res.status(400).send("User not found");
+        }
+        else{
+        res.send(users);
+        }
+    }
+    catch(err){
+        res.status(400).send("something went wrong");
+    }
+})
 
 
+//API feed ti get all the data
+
+app.get("/feed",async(req,res)=>{
+    
+    try{
+        console.log(userEmail);
+        const users=await User.find({});
+        if(users.length===0){
+            res.status(400).send("User not found");
+        }
+        else{
+        res.send(users);
+        }
+    }
+    catch(err){
+        res.status(400).send("something went wrong");
+    }
+})
+
+app.delete("/user",async (req,res)=>{
+    const userId=req.body.userId;
+    try{
+        //const user= await User.findByIdAndDelete({_id:userId}); this or down line both works for delete
+        const user= await User.findByIdAndDelete(userId);
+        res.send("User deleted successsfully");
+    }
+    catch(err){
+        res.status(400).send("something went wrong");
+    }
+});
  
+
+
+
 connectDB().then(()=>{
     console.log("Database Connection established");
     app.listen(7777,()=>{
